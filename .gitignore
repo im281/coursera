@@ -1,18 +1,19 @@
-*.gem
-*.rbc
-.bundle
-.config
-coverage
-InstalledFiles
-lib/bundler/man
-pkg
-rdoc
-spec/reports
-test/tmp
-test/version_tmp
-tmp
+.DS_Store
+# eclipse specific git ignore
+.project
+.metadata
+**/bin/**
+**/tmp/**
+*.tmp
+*.bak
+*.swp
+*~.nib
+.classpath
+.settings
+.loadpath
 
-# YARD artifacts
-.yardoc
-_yardoc
-doc/
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
