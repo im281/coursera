@@ -3,6 +3,7 @@ import java.util.Arrays;
 public class Percolation {
 
     private WeightedQuickUnionUF full;
+    private WeightedQuickUnionUF percolate;
 
     private boolean[] opened;
     private int n;
@@ -13,6 +14,7 @@ public class Percolation {
     public Percolation(int N) {
         n = N;
         full = new WeightedQuickUnionUF(n * n + 1);
+        percolate = new WeightedQuickUnionUF(n * n + 2);
         prepare();
     }
 
@@ -64,15 +66,21 @@ public class Percolation {
      * does the system percolate?
      */
     public boolean percolates() {
-        return false;
+        if (n == 1) {
+            return isOpen(1, 1);
+        }
+        return percolate.connected(0, n * n + 1);
     }
 
     private void prepare() {
         opened = new boolean[n * n];
         Arrays.fill(opened, false);
+
         for (int col = 1; col <= n; col++) {
             // init uf's
             full.union(toUFPox(1, col), 0);
+            percolate.union(toUFPox(1, col), 0);
+            percolate.union(toUFPox(n, col), n * n + 1);
         }
     }
 
@@ -86,6 +94,7 @@ public class Percolation {
     private void doConnect(boolean condition, int fromPox, int toPox) {
         if (condition && opened[toPox]) {
             full.union(toUFPox(toPox), toUFPox(fromPox));
+            percolate.union(toUFPox(toPox), toUFPox(fromPox));
         }
     }
 
