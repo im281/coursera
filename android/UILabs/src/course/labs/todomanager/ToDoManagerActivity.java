@@ -11,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.zip.Inflater;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -50,11 +51,12 @@ public class ToDoManagerActivity extends ListActivity {
 		getListView().setFooterDividersEnabled(true);
 
 		//TODO - Inflate footerView for footer_view.xml file
-
-		TextView footerView = null;
-
+		LayoutInflater inflater = LayoutInflater.from(this); // 1
+		TextView footerView =  (TextView) inflater.inflate(R.layout.footer_view, null);
+		
 		//TODO - Add footerView to ListView
-
+		getListView().addFooterView(footerView);
+		
 		footerView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -62,12 +64,12 @@ public class ToDoManagerActivity extends ListActivity {
 				log("Entered footerView.OnClickListener.onClick()");
 
 				//TODO - Attach Listener to FooterView. Implement onClick().
-
+				System.out.println("setOnClickListener"); 	
 			}
 		});
 
 		//TODO - Attach the adapter to this ListActivity's ListView
-
+		setListAdapter(mAdapter);
 	}
 
 	@Override
