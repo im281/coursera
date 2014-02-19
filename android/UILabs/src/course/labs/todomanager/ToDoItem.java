@@ -14,7 +14,21 @@ public class ToDoItem {
 	public static final String ITEM_SEP = System.getProperty("line.separator");
 
 	public enum Priority {
-		LOW, MED, HIGH
+		LOW("Low"), MED("Medium"), HIGH("High");
+		
+		private String label;
+
+		private Priority(String label){
+			this.setLabel(label);
+		}
+
+		public String getLabel() {
+			return label;
+		}
+
+		public void setLabel(String label) {
+			this.label = label;
+		}
 	};
 
 	public enum Status {
