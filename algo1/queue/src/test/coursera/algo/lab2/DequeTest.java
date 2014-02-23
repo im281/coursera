@@ -6,21 +6,22 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class DequeTest {
-    
+
     @Test
-    public void initionStatus(){
+    public void initionStatus() {
         Deque<String> deck = new Deque<String>();
         Assert.assertTrue(deck.isEmpty());
-        Assert.assertEquals(0,deck.size());
+        Assert.assertEquals(0, deck.size());
     }
 
-    @Test(expected=NoSuchElementException.class)
-    public void removeFirstFromEmptyDeck(){
+    @Test(expected = NoSuchElementException.class)
+    public void removeFirstFromEmptyDeck() {
         Deque<String> deck = new Deque<String>();
         deck.removeFirst();
     }
-    @Test(expected=NoSuchElementException.class)
-    public void removeLastFromEmptyDeck(){
+
+    @Test(expected = NoSuchElementException.class)
+    public void removeLastFromEmptyDeck() {
         Deque<String> deck = new Deque<String>();
         deck.removeLast();
     }
@@ -116,11 +117,18 @@ public class DequeTest {
         for (int i = 0; i < numberOfElements; i++) {
             deck.addLast(i + "-" + System.currentTimeMillis());
         }
-        
+
         int index = 0;
         for (String string : deck) {
             Assert.assertTrue(string.startsWith(index + "-"));
             index++;
         }
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void removeShouldNotBeSupported() {
+        Deque<String> deck = new Deque<String>();
+        deck.addLast("1-" + System.currentTimeMillis());
+        deck.iterator().remove();
     }
 }
