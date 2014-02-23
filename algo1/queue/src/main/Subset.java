@@ -10,7 +10,7 @@ public class Subset {
         }
         
         for (int i = 0; i < Integer.parseInt(args[0]); i++) {
-            StdOut.print(q.dequeue());
+            StdOut.println(q.dequeue());
         }
     }
 }
