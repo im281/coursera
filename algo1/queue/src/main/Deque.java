@@ -1,5 +1,3 @@
-package coursera.algo.lab2;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 

@@ -1,5 +1,3 @@
-package coursera.algo.lab2;
-
 import java.util.NoSuchElementException;
 
 import org.junit.Assert;
@@ -130,5 +128,21 @@ public class DequeTest {
         Deque<String> deck = new Deque<String>();
         deck.addLast("1-" + System.currentTimeMillis());
         deck.iterator().remove();
+    }
+    
+    @Test
+    public void innerIterator(){
+        int numberOfElements = 50;
+        Deque<String> deck = new Deque<String>();
+
+        for (int i = 0; i < numberOfElements; i++) {
+            deck.addLast(i + "-" + System.currentTimeMillis());
+        }
+        
+        for (String item : deck) {
+            for (String innerItem : deck) {
+                System.out.println("item= " + item + " innerItem= " + innerItem);
+            }
+        }
     }
 }
