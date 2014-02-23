@@ -125,6 +125,17 @@ public class Deque<Item> implements Iterable<Item> {
      * unit testing
      */
     public static void main(String[] args) {
+        int items = 50;
+        
+        Deque<Integer> deque = new Deque<Integer>();
+        for(int i=0; i<items; i++){
+            deque.addFirst(i);
+            System.out.println(deque.size());
+        }
+        
+        for (Integer integer : deque) {
+            System.out.println(integer);
+        }
     }
 
     private class DequeIterator implements Iterator<Item> {
