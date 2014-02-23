@@ -34,24 +34,18 @@ public class RandomizedQueueTest {
     @Test
     public void enqueueShouldBeConsistent() {
         RandomizedQueue<String> q = new RandomizedQueue<String>();
-
         String item1 = "firstItem";
         String item2 = "secondItem";
-
         q.enqueue(item1);
         q.enqueue(item2);
-
         Assert.assertEquals(2, q.size());
     }
 
     @Test
     public void enqueueShouldSaveItem() {
         RandomizedQueue<String> q = new RandomizedQueue<String>();
-
         String item1 = "firstItem";
-
         q.enqueue(item1);
-
         Assert.assertEquals(item1, q.dequeue());
     }
 
@@ -69,13 +63,11 @@ public class RandomizedQueueTest {
         for (int i = 0; i < n; i++) {
             items.add("element-" + i);
         }
-        
         //adding items
         RandomizedQueue<String> q = new RandomizedQueue<String>();
         for (String item : items) {
             q.enqueue(item);
         }
-        
         //reading elements
         for (int i = 0; i < n; i++) {
             String item = q.dequeue();

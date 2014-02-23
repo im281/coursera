@@ -1,3 +1,4 @@
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -5,6 +6,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private Node first;
     private int size;
+    private boolean changed = false;
 
     /*
      * construct an empty randomized queue
@@ -36,10 +38,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new NullPointerException("item cant be null");
         }
 
-        Node newNode = new Node(item, first);
-        first = newNode;
+        Node oldFirst = first;
+        first = new Node(item, oldFirst);
 
         size++;
+        changed = true;
     }
 
     /*
@@ -51,12 +54,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         if (size == 1) {
             Node oldFirst = first;
+            oldFirst.setNext(null);
             first = null;
+            size--;
+            changed = true;
             return oldFirst.getItem();
         }
 
         int uniform = StdRandom.uniform(size);
-
         Node before = null;
         Node resp = first;
         for (int i = 0; i < uniform; i++) {
@@ -69,9 +74,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         } else {
             before.setNext(resp.getNext());
         }
-        resp.setNext(null);
 
+        resp.setNext(null);
         size--;
+        changed = true;
         return resp.getItem();
     }
 
@@ -81,8 +87,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Item sample() {
         if (isEmpty())
             throw new NoSuchElementException("Stack underflow");
+        if (size == 1)
+            return first.getItem();
 
-        return null;
+        int uniform = StdRandom.uniform(size);
+        Node resp = first;
+        for (int i = 0; i < uniform; i++) {
+            resp = resp.getNext();
+        }
+        return resp.getItem();
     }
 
     /*
@@ -98,18 +111,43 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private class RandomizedQueueIterator implements Iterator<Item> {
 
-        Node current = first;
+        private boolean firstCall = true;
+        private RandomizedQueue<Item> items;
+
+        public RandomizedQueueIterator() {
+            loadItems();
+        }
+
+        private void loadItems() {
+            items = new RandomizedQueue<Item>();
+            Node current = first;
+            while (current != null) {
+                items.enqueue(current.getItem());
+                current = current.getNext();
+            }
+            changed = false;
+        }
 
         @Override
         public boolean hasNext() {
-            return current != null;
+            return !items.isEmpty();
         }
 
         @Override
         public Item next() {
-            Node newCurrent = current;
-            current = current.getNext();
-            return newCurrent.getItem();
+            if (!hasNext())
+                throw new NoSuchElementException();
+
+            if (changed) {
+                if (firstCall) {
+                    loadItems();
+                    firstCall = false;
+                } else {
+                    throw new ConcurrentModificationException();
+                }
+            }
+
+            return items.dequeue();
         }
 
         @Override
