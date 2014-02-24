@@ -5,6 +5,9 @@ public class Subset {
         int k = Integer.parseInt(args[0]);
 
         while (!StdIn.isEmpty() && q.size() <= k) {
+            StdRandom.setSeed(System.currentTimeMillis());
+            int uniform = StdRandom.uniform(2);
+            
             q.enqueue(StdIn.readString());
         }
         

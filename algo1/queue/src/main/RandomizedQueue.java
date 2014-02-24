@@ -61,6 +61,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             return oldFirst.getItem();
         }
 
+        StdRandom.setSeed(StdRandom.getSeed() + System.currentTimeMillis());
         int uniform = StdRandom.uniform(size);
         Node before = null;
         Node resp = first;
