@@ -52,28 +52,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty())
             throw new NoSuchElementException("Stack underflow");
 
-        if (size == 1) {
-            Node oldFirst = first;
-            oldFirst.setNext(null);
-            first = null;
-            size--;
-            changed = true;
-            return oldFirst.getItem();
-        }
-
-        StdRandom.setSeed(StdRandom.getSeed() + System.currentTimeMillis());
-        int uniform = StdRandom.uniform(size);
-        Node before = null;
         Node resp = first;
-        for (int i = 0; i < uniform; i++) {
-            before = resp;
-            resp = resp.getNext();
-        }
-
-        if (before == null) {
-            first = resp.getNext();
+        if (size == 1) {
+            first = null;
         } else {
-            before.setNext(resp.getNext());
+
+            StdRandom.setSeed(StdRandom.getSeed() + System.currentTimeMillis());
+            int uniform = StdRandom.uniform(size);
+
+            if (uniform == 0) {
+                first = resp.getNext();
+            } else {
+                Node before = null;
+                for (int i = 0; i < uniform; i++) {
+                    before = resp;
+                    resp = resp.getNext();
+                }
+                before.setNext(resp.getNext());
+            }
         }
 
         resp.setNext(null);
