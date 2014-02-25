@@ -58,7 +58,9 @@ public class RandomizedQueueTest {
 
     @Test
     public void addElementsIntoQueue() {
-        int n = StdRandom.uniform(200);
+//        int n = StdRandom.uniform(16384);
+        StopwatchCPU cpu1= new StopwatchCPU();
+        int n = 16384;
         ArrayList<String> items = new ArrayList<String>(n);
         for (int i = 0; i < n; i++) {
             items.add("element-" + i);
@@ -68,11 +70,15 @@ public class RandomizedQueueTest {
         for (String item : items) {
             q.enqueue(item);
         }
+        System.out.println(cpu1.elapsedTime());
+        
+        StopwatchCPU cpu= new StopwatchCPU();
         //reading elements
         for (int i = 0; i < n; i++) {
             String item = q.dequeue();
             Assert.assertTrue(items.contains(item));
             items.remove(item);
         }
+        System.out.println(cpu.elapsedTime());
     }
 }
