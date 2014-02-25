@@ -4,13 +4,20 @@ public class Subset {
         RandomizedQueue<String> q = new RandomizedQueue<String>();
         int k = Integer.parseInt(args[0]);
 
-        while (!StdIn.isEmpty() && q.size() <= k) {
+        while (!StdIn.isEmpty()) {
+            String input = StdIn.readString();
+
             StdRandom.setSeed(System.currentTimeMillis());
-            int uniform = StdRandom.uniform(2);
+            double uniform = StdRandom.uniform();
             
-            q.enqueue(StdIn.readString());
+            if (q.size() < k) {
+                q.enqueue(input);
+            } else if (uniform > 0.5) {
+                q.dequeue();
+                q.enqueue(input);
+            }
         }
-        
+
         for (int i = 0; i < k; i++) {
             StdOut.println(q.dequeue());
         }
