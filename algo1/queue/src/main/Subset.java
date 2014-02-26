@@ -3,22 +3,24 @@ public class Subset {
     public static void main(String[] args) {
         RandomizedQueue<String> q = new RandomizedQueue<String>();
         int k = Integer.parseInt(args[0]);
-
+        if (k == 0)
+            return;
+        
         while (!StdIn.isEmpty()) {
             String input = StdIn.readString();
 
-            StdRandom.setSeed(System.currentTimeMillis());
-            double uniform = StdRandom.uniform();
-            
+            StdRandom.setSeed(StdRandom.getSeed() + System.currentTimeMillis());
             if (q.size() < k) {
                 q.enqueue(input);
-            } else if (uniform > 0.5) {
+            }
+            
+            if (q.size() == k && StdRandom.bernoulli()) {
                 q.dequeue();
                 q.enqueue(input);
             }
         }
 
-        for (int i = 0; i < k; i++) {
+        while (!q.isEmpty()) {
             StdOut.println(q.dequeue());
         }
     }
