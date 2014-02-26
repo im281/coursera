@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.junit.Assert;
@@ -57,28 +58,84 @@ public class RandomizedQueueTest {
     }
 
     @Test
+    public void twoIndependentIteratorsShouldReturnSameValuesInDifferentOrder() {
+        int n = 100;
+        RandomizedQueue<String> q = new RandomizedQueue<String>();
+        for (int i = 0; i < n; i++) {
+            q.enqueue("element-" + i);
+        }
+
+        Iterator<String> iterator1 = q.iterator();
+        Iterator<String> iterator2 = q.iterator();
+        ArrayList<String> output = new ArrayList<String>(n);
+        while (iterator1.hasNext()) {
+            output.add(iterator1.next());
+        }
+        while (iterator2.hasNext()) {
+            Assert.assertTrue(output.contains(iterator2.next()));
+        }
+    }
+
+    @Test
     public void addElementsIntoQueue() {
-//        int n = StdRandom.uniform(16384);
-        StopwatchCPU cpu1= new StopwatchCPU();
-        int n = 16384;
+        int n = 100;
         ArrayList<String> items = new ArrayList<String>(n);
         for (int i = 0; i < n; i++) {
             items.add("element-" + i);
         }
-        //adding items
+        // adding items
         RandomizedQueue<String> q = new RandomizedQueue<String>();
         for (String item : items) {
             q.enqueue(item);
         }
-        System.out.println(cpu1.elapsedTime());
-        
-        StopwatchCPU cpu= new StopwatchCPU();
-        //reading elements
+
         for (int i = 0; i < n; i++) {
             String item = q.dequeue();
             Assert.assertTrue(items.contains(item));
             items.remove(item);
         }
-        System.out.println(cpu.elapsedTime());
+    }
+
+    @Test
+    public void randomCalls() {
+        RandomizedQueue<String> q = new RandomizedQueue<String>();
+        for (int i = 0; i < 2621440; i++) {
+            int operation = StdRandom.uniform(5);
+            try {
+                switch (operation) {
+                    case 0:
+                        q.enqueue("opera" + StdRandom.uniform(100));
+                        break;
+                    case 1:
+                        q.sample();
+                        break;
+                    case 2:
+                        q.dequeue();
+                        break;
+                    case 3:
+                        q.isEmpty();
+                        break;
+                    case 4:
+                        q.size();
+                        break;
+                }
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public String toString(int[] a) {
+        StringBuilder s = new StringBuilder();
+        s.append("[ ");
+
+        int size = a.length;
+        for (int i = 0; i < size; i++) {
+            s.append(a[i]);
+            if (size > 1 && i != size - 1) {
+                s.append(", ");
+            }
+        }
+        s.append(" ]");
+        return s.toString();
     }
 }

@@ -12,7 +12,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * construct an empty randomized queue
      */
     public RandomizedQueue() {
-        items = (Item[]) new Object[15];
+        items = createItemArray(15);
         size = 0;
     }
 
@@ -47,11 +47,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private void resize(int length) {
-        final Item[] newItems = (Item[]) new Object[length];
+        final Item[] newItems = createItemArray(length);
         for (int i = 0; i < size; i++) {
             newItems[i] = items[i];
         }
         items = newItems;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Item[] createItemArray(int length) {
+        return (Item[]) new Object[length];
     }
 
     /*
@@ -66,20 +71,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
 
         if (size == 1) {
-            return items[--size];
+            Item item = items[--size];
+            items[size] = null;
+            changed = true;
+            return item;
+        } else {
+            StdRandom.setSeed(StdRandom.getSeed() + System.currentTimeMillis());
+            int index = StdRandom.uniform(size);
+
+            Item item = items[index];
+            items[index] = items[--size];
+            items[size] = null;
+
+            changed = true;
+            return item;
         }
-
-        StdRandom.setSeed(StdRandom.getSeed() + System.currentTimeMillis());
-        int index = StdRandom.uniform(size);
-
-        Item item = items[index];
-
-        int last = --size;
-        items[index] = items[last];
-        items[last] = null;
-
-        changed = true;
-        return item;
     }
 
     /*
@@ -137,17 +143,18 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
                     throw new ConcurrentModificationException();
                 }
             }
-            
+
             if (iterSize == 1) {
                 return items[--iterSize];
             }
 
             StdRandom.setSeed(StdRandom.getSeed() + System.currentTimeMillis());
             int index = StdRandom.uniform(iterSize);
+
             Item item = items[index];
-            int last = --iterSize;
-            items[index] = items[last];
-            items[last] = item;
+            items[index] = items[--iterSize];
+            items[iterSize] = item;
+
             return item;
         }
 

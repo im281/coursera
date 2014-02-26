@@ -5,23 +5,13 @@ public class Subset {
         int k = Integer.parseInt(args[0]);
         if (k == 0)
             return;
-        
+
         while (!StdIn.isEmpty()) {
             String input = StdIn.readString();
-
-            StdRandom.setSeed(StdRandom.getSeed() + System.currentTimeMillis());
-            if (q.size() < k) {
-                q.enqueue(input);
-            }
-            
-            if (q.size() == k && StdRandom.bernoulli()) {
-                q.dequeue();
-                q.enqueue(input);
-            }
+            q.enqueue(input);
         }
 
-        while (!q.isEmpty()) {
+        for (int i = 0; i < k; i++)
             StdOut.println(q.dequeue());
-        }
     }
 }
