@@ -14,7 +14,6 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class FunSetSuite extends FunSuite {
 
-
   /**
    * Link to the scaladoc - very clear and detailed tutorial of FunSuite
    *
@@ -47,30 +46,29 @@ class FunSetSuite extends FunSuite {
     assert(1 + 2 === 3)
   }
 
-  
   import FunSets._
 
   test("contains is implemented") {
     assert(contains(x => true, 100))
   }
-  
+
   /**
    * When writing tests, one would often like to re-use certain values for multiple
    * tests. For instance, we would like to create an Int-set and have multiple test
    * about it.
-   * 
+   *
    * Instead of copy-pasting the code for creating the set into every test, we can
    * store it in the test class using a val:
-   * 
+   *
    *   val s1 = singletonSet(1)
-   * 
+   *
    * However, what happens if the method "singletonSet" has a bug and crashes? Then
    * the test methods are not even executed, because creating an instance of the
    * test class fails!
-   * 
+   *
    * Therefore, we put the shared values into a separate trait (traits are like
    * abstract classes), and create an instance inside each test method.
-   * 
+   *
    */
 
   trait TestSets {
@@ -82,15 +80,15 @@ class FunSetSuite extends FunSuite {
   /**
    * This test is currently disabled (by using "ignore") because the method
    * "singletonSet" is not yet implemented and the test would fail.
-   * 
+   *
    * Once you finish your implementation of "singletonSet", exchange the
    * function "ignore" by "test".
    */
   test("singletonSet(1) contains 1") {
-    
+
     /**
      * We create a new instance of the "TestSets" trait, this gives us access
-     * to the values "s1" to "s3". 
+     * to the values "s1" to "s3".
      */
     new TestSets {
       /**
@@ -108,5 +106,21 @@ class FunSetSuite extends FunSuite {
       assert(contains(s, 2), "Union 2")
       assert(!contains(s, 3), "Union 3")
     }
+  }
+
+  test("{1,3,4,5,7,1000} should not contain 2") {
+    new TestSets {
+      val s = union(union(union(union(union(singletonSet(1), singletonSet(3)), singletonSet(4)), singletonSet(5)), singletonSet(7)), singletonSet(1000));
+      assert(!contains(s, 2), "{1,3,4,5,7,1000} should not contain 2")
+      assert(!exists(s, (x: Int) => x == 2), "{1,3,4,5,7,1000} should not contain 2")
+    }
+  }
+
+  test("{1,2,3,4} should contain 2") {
+	  new TestSets {
+		  val s = union(union(union(singletonSet(1), singletonSet(2)), singletonSet(3)), singletonSet(4))
+		  assert(contains(s, 2), "{1,3,4,5,7,1000} should not contain 2")
+		  assert(exists(s, (x: Int) => x == 2), "{1,3,4,5,7,1000} should not contain 2")
+	  }
   }
 }
