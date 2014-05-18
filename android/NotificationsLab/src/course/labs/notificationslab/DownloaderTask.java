@@ -50,9 +50,7 @@ public class DownloaderTask extends AsyncTask<String, Void, String[]> {
 	@Override
 	protected String[] doInBackground(String... urlParameters) {
 		log("Entered doInBackground()");
-
 		return download(urlParameters);
-
 	}
 
 	private String[] download(String urlParameters[]) {
@@ -166,6 +164,8 @@ public class DownloaderTask extends AsyncTask<String, Void, String[]> {
 
 						// TODO: Check whether the result code is RESULT_OK
 
+						Log.i("Lab-Matias", Activity.RESULT_OK + "");
+						Log.i("Lab-Matias", getResultCode() + "");
 						if (Activity.RESULT_OK == getResultCode()) {
 
 							// TODO: If so, create a PendingIntent using the
@@ -224,7 +224,7 @@ public class DownloaderTask extends AsyncTask<String, Void, String[]> {
 							log("Notification Area Notification sent");
 						}
 					}
-				}, null, 0, null, null);
+				}, null, Activity.RESULT_OK, null, null);
 	}
 
 	// Saves the tweets to a file
