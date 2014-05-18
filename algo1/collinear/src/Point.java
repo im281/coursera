@@ -57,7 +57,6 @@ public class Point implements Comparable<Point> {
 
         @Override
         public int compare(Point arg0, Point arg1) {
-            // TODO Auto-generated method stub
             return 0;
         }
     }
